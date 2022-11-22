@@ -5,22 +5,34 @@ import './table.css'
 import TaskForm from './TaskForm';
 
 
-const options = {
-    filterType: 'checkbox',
-    print: false,
-    search: false,
-    sort: false,
-    download: false,
-    filter: false
-};
 
 function Table() {
     const [open, setOpen] = useState(false)
     const [tasks, setTasks] = useState([])
-
+    const [selectedRows, setSelectedRows] = useState([])
     const handleOpen = () => {
         setOpen(true)
     }
+    const options = {
+        filterType: 'checkbox',
+        print: false,
+        search: false,
+        sort: false,
+        download: true,
+        filter: false,
+        downloadOptions: { 
+            filename: 'taskData.csv',
+            // new API change added here
+        },
+        onRowSelectionChange: (rowsSelected) => {
+            setSelectedRows(rowsSelected)
+        },
+        onRowsDelete:  (rowsDeleted,data,newTableData) => {
+            const getDeletingTableKeys = Object.keys(rowsDeleted?.lookup)
+            console.log(getDeletingTableKeys)
+            setTasks(tasks.filter((each,idx) => !getDeletingTableKeys.includes(idx.toString())))
+        }
+    };
 
     const handleSubmit = (data) => {
         setTasks([...tasks, data])

@@ -4,7 +4,7 @@ import Table from './components/Table';
 
 function App() {
   return (
-   <Table/>
+   <Table data-testid="child"/>
   );
 }
 
